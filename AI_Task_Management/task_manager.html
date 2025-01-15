@@ -1,0 +1,53 @@
+<!-- task_manager.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Task Management Tool</title>
+</head>
+<body>
+    <h1>AI Task Management Tool</h1>
+    <input id="task_description" placeholder="Enter task description">
+    <button onclick="predictDuration()">Predict Duration</button>
+    <button onclick="suggestOptimizations()">Suggest Optimizations</button>
+    <button onclick="automateAssignments()">Automate Assignments</button>
+    <div id="output"></div>
+
+    <script>
+        async function predictDuration() {
+            const taskDescription = document.getElementById('task_description').value;
+            const response = await fetch('/predict_duration', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({task_description: taskDescription})
+            });
+            const data = await response.json();
+            document.getElementById('output').textContent = "Predicted Duration: " + data.result;
+        }
+
+        async function suggestOptimizations() {
+            const taskDescription = document.getElementById('task_description').value;
+            const response = await fetch('/suggest_optimizations', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({task_description: taskDescription})
+            });
+            const data = await response.json();
+            document.getElementById('output').textContent = "Optimizations: " + data.result;
+        }
+
+        async function automateAssignments() {
+            const tasks = [
+                {task: "Develop feature A", priority: "high"},
+                {task: "Fix bug B", priority: "medium"}
+            ];
+            const response = await fetch('/automate_assignments', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({tasks: tasks})
+            });
+            const data = await response.json();
+            document.getElementById('output').textContent = "Automated Assignments: " + JSON.stringify(data.result);
+        }
+    </script>
+</body>
+</html>
