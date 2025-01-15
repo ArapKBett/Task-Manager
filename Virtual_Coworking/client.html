@@ -1,0 +1,47 @@
+<!-- client.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Co-working Space</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Virtual Co-working Space</h1>
+    <input id="username" placeholder="Enter your name">
+    <input id="room" placeholder="Enter room name">
+    <button onclick="joinRoom()">Join Room</button>
+    <button onclick="leaveRoom()">Leave Room</button>
+    <div id="messages"></div>
+    <input id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        var socket = io();
+
+        function joinRoom() {
+            var username = document.getElementById('username').value;
+            var room = document.getElementById('room').value;
+            socket.emit('join', {username: username, room: room});
+        }
+
+        function leaveRoom() {
+            var username = document.getElementById('username').value;
+            var room = document.getElementById('room').value;
+            socket.emit('leave', {username: username, room: room});
+        }
+
+        function sendMessage() {
+            var message = document.getElementById('message').value;
+            var room = document.getElementById('room').value;
+            socket.emit('message', {message: message, room: room});
+        }
+
+        socket.on('message', function(msg) {
+            var messages = document.getElementById('messages');
+            var message = document.createElement('div');
+            message.textContent = msg;
+            messages.appendChild(message);
+        });
+    </script>
+</body>
+</html>
